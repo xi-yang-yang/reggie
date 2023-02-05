@@ -2,6 +2,7 @@ package web.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import web.reggie.common.R;
@@ -10,6 +11,7 @@ import web.reggie.service.CategoryService;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -32,8 +34,8 @@ public class CategoryController {
     }
 
     @DeleteMapping
-    public R<String> delete(Long ids) {
-        categoryService.remove(ids);
+    public R<String> delete(Long id) {
+        categoryService.remove(id);
         return R.success("删除成功");
     }
 

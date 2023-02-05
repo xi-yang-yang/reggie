@@ -13,6 +13,7 @@ import web.reggie.domain.User;
 import web.reggie.service.UserService;
 import web.reggie.utils.ValidateCodeUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class UserController {
     public R<String> sendMsg(@RequestBody User user, HttpSession session) {
         String phone = user.getPhone();
         if (!StringUtils.isEmpty(phone)) {
-            String s = ValidateCodeUtils.generateValidateCode(4).toString();
+            String s = ValidateCodeUtils.generateValidateCode(6).toString();
             System.out.println(s);
             session.setAttribute(phone, s);
             return R.success("验证码生成");
@@ -38,6 +39,14 @@ public class UserController {
 
 
     }
+    //用户登出
+    @PostMapping("/loginout")
+    public R<String> loginout(HttpServletRequest request){
+        //清理Session中保存的当前用户登录的id
+        request.getSession().removeAttribute("user");
+        return R.success("退出成功");
+    }
+
 
     @PostMapping("/login")
     public R<User> login(@RequestBody Map user, HttpSession session) {

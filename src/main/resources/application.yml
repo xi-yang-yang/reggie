@@ -16,6 +16,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      id-type: assign_id
+      id-type: assign_id #雪花算法
+
 reggie:
-  path: D://images/
+  path: D://images/  #一定要把images文件夹放到D盘

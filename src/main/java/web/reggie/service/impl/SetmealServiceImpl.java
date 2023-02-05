@@ -31,7 +31,6 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
     @Transactional
     public void saveWithDish(SetmealDto setmealDto) {
         this.save(setmealDto);
-
         List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
         setmealDishes.stream().map((item) -> {
             item.setSetmealId(setmealDto.getId().toString());

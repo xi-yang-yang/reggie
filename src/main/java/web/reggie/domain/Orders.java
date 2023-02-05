@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -45,12 +46,12 @@ public class Orders implements Serializable {
     /**
      * 下单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 结账时间
      */
-    private Date checkoutTime;
+    private LocalDateTime checkoutTime;
 
     /**
      * 支付方式 1微信,2支付宝

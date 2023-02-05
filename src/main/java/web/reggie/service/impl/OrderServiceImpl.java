@@ -13,6 +13,7 @@ import web.reggie.service.*;
 import web.reggie.utils.BaseContext;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -65,9 +66,10 @@ public class OrderServiceImpl extends ServiceImpl<OrdersMapper, Orders> implemen
 
         long orderId = IdWorker.getId();//订单号
 
-        AtomicInteger amount = new AtomicInteger(0);
+        AtomicInteger amount = new AtomicInteger(0);//原子操作
 
-        List<OrderDetail> orderDetails = shoppingCarts.stream().map((item) -> {
+        List<OrderDetail> orderDetails = shoppingCarts.stream().map((item) -> {//两个作用 操作订单明细和计算金额
+            //属性设置
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrderId(orderId);
             orderDetail.setNumber(item.getNumber());
@@ -77,14 +79,14 @@ public class OrderServiceImpl extends ServiceImpl<OrdersMapper, Orders> implemen
             orderDetail.setName(item.getName());
             orderDetail.setImage(item.getImage());
             orderDetail.setAmount(item.getAmount());
-            amount.addAndGet(item.getAmount().multiply(new BigDecimal(item.getNumber())).intValue());
+            amount.addAndGet(item.getAmount().multiply(new BigDecimal(item.getNumber())).intValue());//订单金额累加
             return orderDetail;
         }).collect(Collectors.toList());
 
 
         orders.setId(orderId);
-        orders.setOrderTime(new Date());
-        orders.setCheckoutTime(new Date());
+        orders.setOrderTime(LocalDateTime.now());
+        orders.setCheckoutTime(LocalDateTime.now());
         orders.setStatus(2);
         orders.setAmount(new BigDecimal(amount.get()));//总金额
         orders.setUserId(userId);
@@ -101,7 +103,6 @@ public class OrderServiceImpl extends ServiceImpl<OrdersMapper, Orders> implemen
 
         //向订单明细表插入数据，多条数据
         orderDetailService.saveBatch(orderDetails);
-
         //清空购物车数据
         shoppingCartService.remove(wrapper);
     }

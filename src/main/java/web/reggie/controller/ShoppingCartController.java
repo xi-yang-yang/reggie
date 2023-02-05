@@ -9,7 +9,7 @@ import web.reggie.domain.ShoppingCart;
 import web.reggie.service.ShoppingCartService;
 import web.reggie.utils.BaseContext;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -59,7 +59,7 @@ public class ShoppingCartController {
         } else {
             //如果不存在，则添加到购物车，数量默认就是一
             shoppingCart.setNumber(1);
-            shoppingCart.setCreateTime(new Date());
+            shoppingCart.setCreateTime(LocalDateTime.now());
             shoppingCartService.save(shoppingCart);
 
         }

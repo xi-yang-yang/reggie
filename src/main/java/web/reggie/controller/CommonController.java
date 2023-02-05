@@ -49,8 +49,6 @@ public class CommonController {
         while ((length = fileInputStream.read(arr)) != -1) {
             outputStream.write(arr, 0, length);
             outputStream.flush();
-
         }
-
     }
 }

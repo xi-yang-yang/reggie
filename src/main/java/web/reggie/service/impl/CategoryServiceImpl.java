@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.reggie.domain.Category;
-import web.reggie.domain.Dish;
+import web.reggie.domain.Food;
 import web.reggie.domain.Setmeal;
 import web.reggie.service.CategoryService;
 import web.reggie.mapper.CategoryMapper;
 import org.springframework.stereotype.Service;
-import web.reggie.service.DishService;
+import web.reggie.service.FoodService;
 import web.reggie.service.SetmealService;
 
 /**
@@ -21,25 +21,28 @@ import web.reggie.service.SetmealService;
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
         implements CategoryService {
     @Autowired
-    private DishService dishService;
+    private FoodService foodService;
     @Autowired
     private SetmealService setmealService;
 
     @Override
-    public void remove(Long ids) {
-        LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        dishLambdaQueryWrapper.eq(Dish::getCategoryId, ids);
-        int count = dishService.count(dishLambdaQueryWrapper);
+    public void remove(Long id) {
+        LambdaQueryWrapper<Food> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        //菜品查询
+        dishLambdaQueryWrapper.eq(Food::getCategoryId, id);
+        //通过菜品分类id来查询菜品
+        int count = foodService.count(dishLambdaQueryWrapper);
         if (count > 0) {
-            System.out.println("关联数据了，不能直接删除");
+            throw new RuntimeException("关联数据了，不能直接删除");
+
         }
         LambdaQueryWrapper<Setmeal> setmealLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        setmealLambdaQueryWrapper.eq(Setmeal::getCategoryId, ids);
+        setmealLambdaQueryWrapper.eq(Setmeal::getCategoryId, id);
         int count1 = setmealService.count(setmealLambdaQueryWrapper);
         if (count1 > 0) {
-            System.out.println("关联数据了，不能直接删除");
+            throw new RuntimeException("关联数据了，不能直接删除");
         }
-        super.removeById(ids);
+        super.removeById(id);
 
 
     }
