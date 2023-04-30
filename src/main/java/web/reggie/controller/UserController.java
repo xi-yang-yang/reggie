@@ -28,9 +28,9 @@ public class UserController {
     public R<String> sendMsg(@RequestBody User user, HttpSession session) {
         String phone = user.getPhone();
         if (!StringUtils.isEmpty(phone)) {
-            String s = ValidateCodeUtils.generateValidateCode(6).toString();
-            System.out.println(s);
-            session.setAttribute(phone, s);
+            String code = ValidateCodeUtils.generateValidateCode(6).toString();
+            log.debug(code);
+            session.setAttribute(phone, code);
             return R.success("验证码生成");
 
         } else {
@@ -39,9 +39,10 @@ public class UserController {
 
 
     }
+
     //用户登出
     @PostMapping("/loginout")
-    public R<String> loginout(HttpServletRequest request){
+    public R<String> loginout(HttpServletRequest request) {
         //清理Session中保存的当前用户登录的id
         request.getSession().removeAttribute("user");
         return R.success("退出成功");
