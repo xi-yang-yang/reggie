@@ -13,10 +13,17 @@ server:
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: assign_id #雪花算法
 
 reggie:
   path: D://images/  #一定要把images文件夹放到D盘
+logging:
+  level:
+    web.reggie: debug
+  file:
+    name: server.log
+
+
+
